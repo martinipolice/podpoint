@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import model.Product;
+import model.Inventory;
 
 /***********************************************************
  * Saves and loads the product list using serialization.
@@ -20,6 +21,7 @@ public class FileHandler {
 
 	// the file is saved inside the project folder
 	private static final Path PRODUCTS_PATH = Paths.get("data/products.dat");
+	private static final Path INVENTORY_PATH = Paths.get("data/inventory.dat");
 
 	// writes the whole list into the file
 	public static void saveProducts(ArrayList<Product> products) {
@@ -51,5 +53,35 @@ public class FileHandler {
 			System.out.println("Product class not found: " + e);
 		}
 		return products;
+	}
+	
+	// writes the whole inventory into the file
+	public static void saveInventory(Inventory inventory) {
+		try {
+			Files.createDirectories(INVENTORY_PATH.getParent());
+			ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(INVENTORY_PATH));
+			out.writeObject(inventory);
+			out.close();
+		} catch (IOException e) {
+			System.out.println("Could not save inventory: " + e);
+		}
+	}
+
+	// reads the inventory back; returns an empty inventory if there is no file yet
+	public static Inventory loadInventory() {
+		Inventory inventory = new Inventory();
+		if (!Files.exists(INVENTORY_PATH)) {
+			return inventory;
+		}
+		try {
+			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(INVENTORY_PATH));
+			inventory = (Inventory) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			System.out.println("Could not read inventory: " + e);
+		} catch (ClassNotFoundException e) {
+			System.out.println("Inventory class not found: " + e);
+		}
+		return inventory;
 	}
 }

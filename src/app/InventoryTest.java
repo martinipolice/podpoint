@@ -5,6 +5,7 @@ import model.Inventory;
 import model.InventoryItem;
 import model.Product;
 import util.FileHandler;
+import util.InsufficientStockException;
 
 /***********************************************************
  * Quick test of Inventory. Not part of the final app.
@@ -47,5 +48,23 @@ public class InventoryTest {
 		InventoryItem loadedTablea = loaded.findItem("Premium Chocolate Tablea (100% Pure)", "72g");
 		System.out.println("Loaded items: " + loaded.getItems().size());
 		System.out.println("Loaded tablea 72g quantity: " + loadedTablea.getQuantity());
+		
+
+		// a sale that works: sell 5 tablea 72g (33 - 5 = 28)
+		try {
+			tablea.removeStock(5);
+			System.out.println("Sold 5. Left: " + tablea.getQuantity());
+		} catch (InsufficientStockException e) {
+			System.out.println("Sale failed: " + e.getMessage());
+		}
+
+		// a sale that fails: try to sell 100 when only 28 are left
+		try {
+			tablea.removeStock(100);
+			System.out.println("Sold 100. Left: " + tablea.getQuantity());
+		} catch (InsufficientStockException e) {
+			System.out.println("Sale failed: " + e.getMessage());
+		}
+		System.out.println("Still left: " + tablea.getQuantity());
 	}
 }

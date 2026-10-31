@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Inventory;
@@ -38,19 +39,29 @@ public class Main extends Application {
 		Label title = new Label("Pod Point - Inventory");
 		list = new ListView<>();
 		Label message = new Label("");
+		TextField amountField = new TextField();
+		amountField.setPromptText("Amount to add");
 
-		Button restockButton = new Button("Restock +10");
-		// runs when the button is clicked
+		Button restockButton = new Button("Restock");
 		restockButton.setOnAction(event -> {
 			int index = list.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
 				message.setText("Select a product first.");
-			} else {
+				return;
+			}
+			try {
+				int amount = Integer.parseInt(amountField.getText());
 				InventoryItem item = inventory.getItems().get(index);
-				item.setQuantity(item.getQuantity() + 10);
-				FileHandler.saveInventory(inventory);
-				showItems();
-				message.setText("Restocked " + item.getProduct().getName() + " by 10.");
+				Product p = item.getProduct();
+				if (inventory.restock(p.getName(), p.getSize(), amount)) {
+					FileHandler.saveInventory(inventory);
+					showItems();
+					message.setText("Restocked " + p.getName() + " by " + amount + ".");
+				} else {
+					message.setText("Amount must be more than 0.");
+				}
+			} catch (NumberFormatException e) {
+				message.setText("Please type a whole number.");
 			}
 		});
 
@@ -59,6 +70,7 @@ public class Main extends Application {
 		VBox root = new VBox(10);
 		root.getChildren().add(title);
 		root.getChildren().add(list);
+		root.getChildren().add(amountField);
 		root.getChildren().add(restockButton);
 		root.getChildren().add(message);
 

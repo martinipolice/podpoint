@@ -8,6 +8,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
 import model.Inventory;
 import model.InventoryItem;
 import model.Product;
@@ -30,6 +32,18 @@ public class Main extends Application {
 			}
 			list.getItems().add(line);
 		}
+	}
+	
+	// reusable piece: a label placed next to its text box
+	private HBox labeledField(String labelText, TextField field) {
+		Label label = new Label(labelText);
+		label.setPrefWidth(110);
+		field.setPrefWidth(300);
+
+		HBox row = new HBox(10);
+		row.getChildren().add(label);
+		row.getChildren().add(field);
+		return row;
 	}
 
 	@Override
@@ -122,15 +136,26 @@ public class Main extends Application {
 		list.setPrefHeight(220);
 
 		VBox root = new VBox(10);
+		root.setPadding(new Insets(10));
 		root.getChildren().add(title);
 		root.getChildren().add(list);
-		root.getChildren().add(amountField);
+
+		root.getChildren().add(new Label("Restock selected product"));
+		root.getChildren().add(labeledField("Amount to add:", amountField));
 		root.getChildren().add(restockButton);
-		root.getChildren().addAll(nameField, descField, sizeField, priceField, categoryField, qtyField);
+
+		root.getChildren().add(new Label("Add a new product"));
+		root.getChildren().add(labeledField("Name:", nameField));
+		root.getChildren().add(labeledField("Description:", descField));
+		root.getChildren().add(labeledField("Size:", sizeField));
+		root.getChildren().add(labeledField("Price (PHP):", priceField));
+		root.getChildren().add(labeledField("Category:", categoryField));
+		root.getChildren().add(labeledField("Starting stock:", qtyField));
 		root.getChildren().add(addButton);
+
 		root.getChildren().add(message);
 
-		Scene scene = new Scene(root, 500, 700);
+		Scene scene = new Scene(root, 500, 740);
 		stage.setTitle("Pod Point");
 		stage.setScene(scene);
 		stage.show();

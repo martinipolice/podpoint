@@ -15,6 +15,14 @@ import model.InventoryItem;
 import model.Product;
 import util.FileHandler;
 
+/***********************************************************
+ * Starting point of Pod Point. Shows the Inventory screen where the
+ * Manager can view stock, restock, add new products and change prices.
+ *
+ * @author CHARLES GIAN L. SANTOS
+ * @created_date 2026-10-22
+ ***********************************************************/
+
 public class Main extends Application {
 
 	private Inventory inventory;
@@ -79,6 +87,35 @@ public class Main extends Application {
 			}
 		});
 		
+		// ----- change the price of the selected product -----
+		TextField newPriceField = new TextField();
+		newPriceField.setPromptText("New price");
+
+		Button priceButton = new Button("Update Price");
+		priceButton.setOnAction(event -> {
+			int index = list.getSelectionModel().getSelectedIndex();
+			if (index == -1) {
+				message.setText("Select a product first.");
+				return;
+			}
+			try {
+				double newPrice = Double.parseDouble(newPriceField.getText());
+				if (newPrice <= 0) {
+					message.setText("Price must be above 0.");
+					return;
+				}
+				Product p = inventory.getItems().get(index).getProduct();
+				p.setPrice(newPrice);
+				FileHandler.saveInventory(inventory);
+				showItems();
+				message.setText("Price of " + p.getName() + " (" + p.getSize() + ") is now PHP "
+						+ String.format("%.2f", newPrice) + ".");
+				newPriceField.clear();
+			} catch (NumberFormatException e) {
+				message.setText("Price must be a number.");
+			}
+		});
+		
 		// ----- form to add a new product -----
 		TextField nameField = new TextField();
 		nameField.setPromptText("Product name");
@@ -133,7 +170,7 @@ public class Main extends Application {
 
 		showItems();
 
-		list.setPrefHeight(220);
+		list.setPrefHeight(160);
 
 		VBox root = new VBox(10);
 		root.setPadding(new Insets(10));
@@ -143,6 +180,9 @@ public class Main extends Application {
 		root.getChildren().add(new Label("Restock selected product"));
 		root.getChildren().add(labeledField("Amount to add:", amountField));
 		root.getChildren().add(restockButton);
+		root.getChildren().add(new Label("Change price of selected product"));
+		root.getChildren().add(labeledField("New price:", newPriceField));
+		root.getChildren().add(priceButton);
 
 		root.getChildren().add(new Label("Add a new product"));
 		root.getChildren().add(labeledField("Name:", nameField));
@@ -155,7 +195,7 @@ public class Main extends Application {
 
 		root.getChildren().add(message);
 
-		Scene scene = new Scene(root, 500, 740);
+		Scene scene = new Scene(root, 500, 780);
 		stage.setTitle("Pod Point");
 		stage.setScene(scene);
 		stage.show();

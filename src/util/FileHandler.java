@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import model.Product;
 import model.Inventory;
+import model.Transaction;
 
 /***********************************************************
  * Saves and loads the product list using serialization.
@@ -22,6 +23,7 @@ public class FileHandler {
 	// the file is saved inside the project folder
 	private static final Path PRODUCTS_PATH = Paths.get("data/products.dat");
 	private static final Path INVENTORY_PATH = Paths.get("data/inventory.dat");
+	private static final Path TRANSACTIONS_PATH = Paths.get("data/transactions.dat");
 
 	// writes the whole list into the file
 	public static void saveProducts(ArrayList<Product> products) {
@@ -83,5 +85,45 @@ public class FileHandler {
 			System.out.println("Inventory class not found: " + e);
 		}
 		return inventory;
+	}
+	
+	// writes the whole transaction history into the file
+	public static void saveTransactions(ArrayList<Transaction> transactions) {
+		try {
+			Files.createDirectories(TRANSACTIONS_PATH.getParent());
+			ObjectOutputStream out = new ObjectOutputStream(Files.newOutputStream(TRANSACTIONS_PATH));
+			out.writeObject(transactions);
+			out.close();
+		} catch (IOException e) {
+			System.out.println("Could not save transactions: " + e);
+		}
+	}
+
+	// reads the history back; returns an empty list if there is no file yet
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Transaction> loadTransactions() {
+		ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+		if (!Files.exists(TRANSACTIONS_PATH)) {
+			return transactions;
+		}
+		try {
+			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(TRANSACTIONS_PATH));
+			transactions = (ArrayList<Transaction>) in.readObject();
+			in.close();
+		} catch (IOException e) {
+			System.out.println("Could not read transactions: " + e);
+		} catch (ClassNotFoundException e) {
+			System.out.println("Transaction class not found: " + e);
+		}
+
+		// new transactions continue numbering after the highest saved id
+		int highest = 0;
+		for (Transaction t : transactions) {
+			if (t.getId() > highest) {
+				highest = t.getId();
+			}
+		}
+		Transaction.setNextId(highest + 1);
+		return transactions;
 	}
 }

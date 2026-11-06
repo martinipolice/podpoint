@@ -12,6 +12,9 @@ import model.Inventory;
 import model.InventoryItem;
 import model.Product;
 import model.SaleLine;
+import model.SaleTransaction;
+import model.Transaction;
+import util.InsufficientStockException;
 import util.FileHandler;
 
 /***********************************************************
@@ -102,6 +105,45 @@ public class SalesScreen extends VBox {
 			showCart();
 			message.setText("Cart cleared.");
 		});
+		
+		Button checkoutButton = new Button("Checkout");
+		checkoutButton.setOnAction(event -> {
+			if (cart.isEmpty()) {
+				message.setText("Cart is empty.");
+				return;
+			}
+			// take the stock out for every line in the cart
+			try {
+				for (SaleLine line : cart) {
+					Product p = line.getProduct();
+					InventoryItem item = inventory.findItem(p.getName(), p.getSize());
+					item.removeStock(line.getQuantity());
+				}
+			} catch (InsufficientStockException e) {
+				// undo: reload the inventory from the file, which still has the old stock
+				inventory = FileHandler.loadInventory();
+				showProducts();
+				message.setText("Sale cancelled. " + e.getMessage());
+				return;
+			}
+
+			// load the history first, so the new sale gets the next id
+			ArrayList<Transaction> history = FileHandler.loadTransactions();
+			SaleTransaction sale = new SaleTransaction("Clerk1");
+			for (SaleLine line : cart) {
+				sale.addLine(line);
+			}
+			history.add(sale);
+
+			FileHandler.saveTransactions(history);
+			FileHandler.saveInventory(inventory);
+
+			message.setText("Sale #" + sale.getId() + " complete. Total: PHP "
+					+ String.format("%.2f", sale.getTotal()));
+			cart.clear();
+			showCart();
+			showProducts();
+		});
 
 		showProducts();
 		showCart();
@@ -120,7 +162,10 @@ public class SalesScreen extends VBox {
 		getChildren().add(new Label("Cart"));
 		getChildren().add(cartList);
 		getChildren().add(totalLabel);
-		getChildren().add(clearButton);
+		HBox buttonRow = new HBox(10);
+		buttonRow.getChildren().add(checkoutButton);
+		buttonRow.getChildren().add(clearButton);
+		getChildren().add(buttonRow);
 		getChildren().add(message);
 	}
 }

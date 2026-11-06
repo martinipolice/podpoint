@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ui.InventoryScreen;
+import ui.SalesScreen;
 
 /***********************************************************
  * Starting point of Pod Point. Opens the window and shows a screen.
@@ -15,9 +16,9 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		InventoryScreen inventoryScreen = new InventoryScreen();
+		SalesScreen salesScreen = new SalesScreen();
 
-		Scene scene = new Scene(inventoryScreen, 500, 780);
+		Scene scene = new Scene(salesScreen, 500, 640);
 		stage.setTitle("Pod Point");
 		stage.setScene(scene);
 		stage.show();

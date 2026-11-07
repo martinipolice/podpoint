@@ -55,4 +55,11 @@ public abstract class Transaction implements Serializable {
 
 	// each kind of transaction works out its own total
 	public abstract double getTotal();
+	
+	// each kind of transaction describes itself in one short text
+	public abstract String getDescription();
+	
+	// what happens to the stock when this is voided (nothing by default)
+	public void undoEffect(Inventory inventory) {
+	}
 }

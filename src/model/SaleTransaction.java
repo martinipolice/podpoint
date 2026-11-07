@@ -33,4 +33,18 @@ public class SaleTransaction extends Transaction {
 		}
 		return total;
 	}
+	
+	@Override
+	public String getDescription() {
+		return "Sale (" + lines.size() + " product(s))";
+	}
+	
+	// voiding a sale puts the sold items back into stock
+	@Override
+	public void undoEffect(Inventory inventory) {
+		for (SaleLine line : lines) {
+			Product p = line.getProduct();
+			inventory.restock(p.getName(), p.getSize(), line.getQuantity());
+		}
+	}
 }

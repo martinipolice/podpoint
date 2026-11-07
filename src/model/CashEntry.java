@@ -22,9 +22,6 @@ public class CashEntry extends Transaction {
 		this.cashIn = cashIn;
 	}
 
-	public String getDescription() {
-		return description;
-	}
 
 	public double getAmount() {
 		return amount;
@@ -41,5 +38,13 @@ public class CashEntry extends Transaction {
 			return amount;
 		}
 		return -amount;
+	}
+	
+	@Override
+	public String getDescription() {
+		if (cashIn) {
+			return "Cash in: " + description;
+		}
+		return "Cash out: " + description;
 	}
 }

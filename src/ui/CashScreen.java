@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.CashEntry;
 import model.Transaction;
+import model.User;
 import util.FileHandler;
 
 /***********************************************************
@@ -25,6 +26,7 @@ public class CashScreen extends VBox {
 	private TextField amountField;
 	private Label balanceLabel;
 	private Label message;
+	private User user;
 
 	// adds up the totals of the transactions that are not voided
 	private double balanceOf(ArrayList<Transaction> list) {
@@ -60,7 +62,7 @@ public class CashScreen extends VBox {
 				return;
 			}
 
-			CashEntry entry = new CashEntry("Clerk1", description, amount, cashIn);
+			CashEntry entry = new CashEntry(user.getFullName(), description, amount, cashIn);
 			history.add(entry);
 			FileHandler.saveTransactions(history);
 
@@ -75,7 +77,8 @@ public class CashScreen extends VBox {
 		}
 	}
 
-	public CashScreen() {
+	public CashScreen(User user) {
+		this.user = user;
 		Label title = new Label("Pod Point - Cash");
 		balanceLabel = new Label("");
 		message = new Label("");

@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,8 +15,9 @@ import model.Product;
 import model.SaleLine;
 import model.SaleTransaction;
 import model.Transaction;
-import util.InsufficientStockException;
+import model.User;
 import util.FileHandler;
+import util.InsufficientStockException;
 
 /***********************************************************
  * The sales screen. The Clerk picks products, types a quantity
@@ -56,7 +58,7 @@ public class SalesScreen extends VBox {
 		totalLabel.setText("Total: PHP " + String.format("%.2f", total));
 	}
 
-	public SalesScreen() {
+	public SalesScreen(User user) { 
 		inventory = FileHandler.loadInventory();
 		cart = new ArrayList<SaleLine>();
 
@@ -129,7 +131,7 @@ public class SalesScreen extends VBox {
 
 			// load the history first, so the new sale gets the next id
 			ArrayList<Transaction> history = FileHandler.loadTransactions();
-			SaleTransaction sale = new SaleTransaction("Clerk1");
+			SaleTransaction sale = new SaleTransaction(user.getFullName());
 			for (SaleLine line : cart) {
 				sale.addLine(line);
 			}

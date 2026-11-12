@@ -1,0 +1,29 @@
+.list-view {
+	-fx-background-color: -card;
+	-fx-background-radius: 6;
+	-fx-border-color: -line;
+	-fx-border-radius: 6;
+}
+
+.list-cell {
+	-fx-background-color: transparent;
+	-fx-padding: 6 10 6 10;
+	-fx-text-fill: -text;
+}
+
+.list-cell:odd {
+	-fx-background-color: #FAF8F6;
+}
+
+.list-cell:empty {
+	-fx-background-color: transparent;
+}
+
+.list-cell:filled:hover {
+	-fx-background-color: #F1ECE6;
+}
+
+.list-cell:filled:selected {
+	-fx-background-color: -terracotta;
+	-fx-text-fill: white;
+}

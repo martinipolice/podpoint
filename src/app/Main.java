@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 import model.User;
 import ui.Dashboard;
 import ui.LoginScreen;
+import util.Theme;
 
 /***********************************************************
  * Starting point of Pod Point. Opens the Login screen first,
@@ -29,12 +30,16 @@ public class Main extends Application {
 
 	// the Welcome/Login window
 	public void showLogin() {
-		stage.setScene(new Scene(new LoginScreen(this), 650, 820));
+		Scene scene = new Scene(new LoginScreen(this), 650, 820);
+		Theme.apply(scene);
+		stage.setScene(scene);
 	}
 
 	// the main window after a correct login
 	public void showDashboard(User user) {
-		stage.setScene(new Scene(new Dashboard(this, user), 650, 820));
+		Scene scene = new Scene(new Dashboard(this, user), 650, 820);
+		Theme.apply(scene);
+		stage.setScene(scene);
 	}
 
 	public static void main(String[] args) {

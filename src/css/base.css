@@ -1,0 +1,18 @@
+.root {
+	-cocoa: #4A2C1A;
+	-terracotta: #B5502A;
+	-leaf: #6F8F4A;
+	-surface: #F7F5F2;
+	-card: #FFFFFF;
+	-line: #DDD5CC;
+	-text: #2B1D15;
+	-muted: #6F6358;
+
+	-fx-font-family: "Segoe UI";
+	-fx-font-size: 14px;
+	-fx-background-color: -surface;
+}
+
+.label {
+	-fx-text-fill: -text;
+}

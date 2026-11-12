@@ -1,0 +1,21 @@
+.button {
+	-fx-background-color: -card;
+	-fx-background-radius: 6;
+	-fx-border-color: -line;
+	-fx-border-radius: 6;
+	-fx-text-fill: -text;
+	-fx-padding: 7 16 7 16;
+	-fx-cursor: hand;
+}
+
+.button:hover {
+	-fx-background-color: #EFEAE4;
+}
+
+.button:pressed {
+	-fx-background-color: #E3DBD2;
+}
+
+.button:focused {
+	-fx-border-color: -terracotta;
+}

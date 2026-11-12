@@ -1,0 +1,45 @@
+/* utilities.css - small single-purpose classes in the style of Tailwind.
+   Put one or more of them on a control, for example:
+   label.getStyleClass().addAll("text-lg", "font-bold", "text-cocoa");
+   This file is loaded last, so the utilities win over the other files. */
+
+/* text size */
+.text-sm   { -fx-font-size: 13px; }
+.text-base { -fx-font-size: 14px; }
+.text-lg   { -fx-font-size: 16px; }
+.text-xl   { -fx-font-size: 20px; }
+.text-2xl  { -fx-font-size: 26px; }
+
+/* text weight */
+.font-bold   { -fx-font-weight: bold; }
+.font-normal { -fx-font-weight: normal; }
+
+/* text color */
+.text-cocoa      { -fx-text-fill: -cocoa; }
+.text-terracotta { -fx-text-fill: -terracotta; }
+.text-leaf       { -fx-text-fill: -leaf; }
+.text-muted      { -fx-text-fill: -muted; }
+.text-danger     { -fx-text-fill: -danger; }
+.text-white      { -fx-text-fill: white; }
+
+/* background color */
+.bg-surface    { -fx-background-color: -surface; }
+.bg-card       { -fx-background-color: -card; }
+.bg-cocoa      { -fx-background-color: -cocoa; }
+.bg-terracotta { -fx-background-color: -terracotta; }
+.bg-cream      { -fx-background-color: -cream; }
+
+/* padding (1 unit = 4 pixels) */
+.p-1 { -fx-padding: 4; }
+.p-2 { -fx-padding: 8; }
+.p-3 { -fx-padding: 12; }
+.p-4 { -fx-padding: 16; }
+.p-6 { -fx-padding: 24; }
+
+/* border and rounded corners */
+.border     { -fx-border-color: -line; -fx-border-width: 1; }
+.rounded    { -fx-background-radius: 6; -fx-border-radius: 6; }
+.rounded-lg { -fx-background-radius: 10; -fx-border-radius: 10; }
+
+/* soft shadow */
+.shadow { -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.12), 8, 0.1, 0, 2); }

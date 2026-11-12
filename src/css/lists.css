@@ -1,3 +1,5 @@
+/* lists.css - the list boxes (products, cart, history) */
+
 .list-view {
 	-fx-background-color: -card;
 	-fx-background-radius: 6;

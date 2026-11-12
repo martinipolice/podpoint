@@ -1,3 +1,5 @@
+/* buttons.css - normal, primary (main action) and danger buttons */
+
 .button {
 	-fx-background-color: -card;
 	-fx-background-radius: 6;
@@ -18,4 +20,28 @@
 
 .button:focused {
 	-fx-border-color: -terracotta;
+}
+
+.button.primary {
+	-fx-background-color: -terracotta;
+	-fx-border-color: -terracotta;
+	-fx-text-fill: white;
+}
+
+.button.primary:hover {
+	-fx-background-color: #9C431F;
+	-fx-border-color: #9C431F;
+}
+
+.button.primary:pressed {
+	-fx-background-color: #84381A;
+}
+
+.button.danger {
+	-fx-text-fill: -danger;
+	-fx-border-color: -danger;
+}
+
+.button.danger:hover {
+	-fx-background-color: #FBEAE8;
 }

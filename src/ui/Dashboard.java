@@ -1,11 +1,17 @@
 package ui;
 
+import java.util.ArrayList;
 import app.Main;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import model.User;
 
 /***********************************************************
@@ -14,49 +20,79 @@ import model.User;
  * with setCenter (window switching).
  *
  * @author CHARLES GIAN L. SANTOS
- * @created_date 2026-11-11 
+ * @created_date 2026-11-11
  ***********************************************************/
 
 public class Dashboard extends BorderPane {
+
+	private ArrayList<Button> tabs = new ArrayList<>();
+
+	// shows a screen in the middle and marks its button as the active one
+	private void show(Node screen, Button button) {
+		setCenter(screen);
+		for (Button b : tabs) {
+			b.getStyleClass().remove("active");
+		}
+		button.getStyleClass().add("active");
+	}
 
 	public Dashboard(Main main, User user) {
 		Button inventoryButton = new Button("Inventory");
 		Button salesButton = new Button("Sales");
 		Button historyButton = new Button("History");
 		Button cashButton = new Button("Cash");
-		Button logoutButton = new Button("Logout");
 		Button clerkSalesButton = new Button("Clerk Sales");
+		Button logoutButton = new Button("Log Out");
+
+		tabs.add(inventoryButton);
+		tabs.add(salesButton);
+		tabs.add(historyButton);
+		tabs.add(cashButton);
+		tabs.add(clerkSalesButton);
 
 		// each click puts a fresh screen in the middle of the window
-		inventoryButton.setOnAction(event -> setCenter(new InventoryScreen(user)));
-		salesButton.setOnAction(event -> setCenter(new SalesScreen(user)));
-		historyButton.setOnAction(event -> setCenter(new HistoryScreen(user)));
-		cashButton.setOnAction(event -> setCenter(new CashScreen(user)));
-		clerkSalesButton.setOnAction(event -> setCenter(new ClerkSalesScreen()));
+		inventoryButton.setOnAction(event -> show(new InventoryScreen(user), inventoryButton));
+		salesButton.setOnAction(event -> show(new SalesScreen(user), salesButton));
+		historyButton.setOnAction(event -> show(new HistoryScreen(user), historyButton));
+		cashButton.setOnAction(event -> show(new CashScreen(user), cashButton));
+		clerkSalesButton.setOnAction(event -> show(new ClerkSalesScreen(), clerkSalesButton));
 		logoutButton.setOnAction(event -> main.showLogin());
 
-		Label whoLabel = new Label("Logged in as " + user.getFullName() + " (" + user.getRole() + ")");
+		// small logo on a cream badge, so it can be seen on the dark bar
+		ImageView logo = new ImageView(new Image("file:resources/logo.png", 30, 30, true, true));
+		HBox logoBadge = new HBox();
+		logoBadge.getStyleClass().add("logo-badge");
+		logoBadge.getChildren().add(logo);
+
+		Label whoLabel = new Label(user.getFullName() + " (" + user.getRole() + ")");
+
+		// an empty space that pushes the name and Log Out to the right
+		Region spacer = new Region();
+		HBox.setHgrow(spacer, Priority.ALWAYS);
 
 		HBox menu = new HBox(10);
+		menu.getStyleClass().add("top-bar");
 		menu.setPadding(new Insets(10));
+		menu.getChildren().add(logoBadge);
 
 		if (user.canManageProducts()) {
 			// Manager menu: manages products and reviews the history
 			menu.getChildren().add(inventoryButton);
 			menu.getChildren().add(historyButton);
 			menu.getChildren().add(clerkSalesButton);
-			setCenter(new InventoryScreen(user));
+			show(new InventoryScreen(user), inventoryButton);
 		} else {
 			// Clerk menu: records sales and cash, checks inventory, voids in History
 			menu.getChildren().add(salesButton);
 			menu.getChildren().add(cashButton);
 			menu.getChildren().add(historyButton);
 			menu.getChildren().add(inventoryButton);
-			setCenter(new SalesScreen(user));
+			show(new SalesScreen(user), salesButton);
 		}
 
-		menu.getChildren().add(logoutButton);
+		menu.getChildren().add(spacer);
 		menu.getChildren().add(whoLabel);
+		menu.getChildren().add(logoutButton);
 		setTop(menu);
 	}
 }

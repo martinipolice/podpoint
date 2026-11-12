@@ -1,0 +1,5 @@
+/* login.css - the Login screen uses the cream color of the logo */
+
+.login {
+	-fx-background-color: -cream;
+}

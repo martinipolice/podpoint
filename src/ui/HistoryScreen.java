@@ -50,16 +50,17 @@ public class HistoryScreen extends VBox {
 	public HistoryScreen(User user) {
 		history = FileHandler.loadTransactions();
 
-		Label title = new Label("Pod Point - Transaction History");
+		Label title = Parts.title("Transaction History");
 		historyList = new ListView<>();
+		historyList.setPlaceholder(Parts.emptyHint("No transactions yet."));
 		historyList.setPrefHeight(300);
-		balanceLabel = new Label("");
+		balanceLabel = Parts.highlight("");
 
 		showHistory();
 		
 		Label message = new Label("");
 
-		Button voidButton = new Button("Void Selected");
+		Button voidButton = Parts.dangerButton("Void Selected");
 		voidButton.setOnAction(event -> {
 			int index = historyList.getSelectionModel().getSelectedIndex();
 			if (index == -1) {

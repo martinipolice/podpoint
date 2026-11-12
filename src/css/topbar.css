@@ -1,0 +1,32 @@
+/* topbar.css - the dark menu bar after login */
+
+.top-bar {
+	-fx-background-color: -cocoa;
+	-fx-alignment: center-left;
+}
+
+.top-bar .button {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-text-fill: -cream;
+}
+
+.top-bar .button:hover {
+	-fx-background-color: #5E3A28;
+}
+
+/* the button of the screen that is open now */
+.top-bar .button.active {
+	-fx-background-color: -terracotta;
+	-fx-text-fill: white;
+}
+
+.top-bar .label {
+	-fx-text-fill: #D9C7B2;
+}
+
+.logo-badge {
+	-fx-background-color: -cream;
+	-fx-background-radius: 8;
+	-fx-padding: 3;
+}

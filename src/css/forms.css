@@ -1,3 +1,5 @@
+/* forms.css - text boxes and the password box */
+
 .text-field, .password-field {
 	-fx-background-color: -card;
 	-fx-background-radius: 6;

@@ -79,8 +79,8 @@ public class CashScreen extends VBox {
 
 	public CashScreen(User user) {
 		this.user = user;
-		Label title = new Label("Pod Point - Cash");
-		balanceLabel = new Label("");
+		Label title = Parts.title("Cash");
+		balanceLabel = Parts.highlight("");
 		message = new Label("");
 
 		descField = new TextField();
@@ -90,7 +90,7 @@ public class CashScreen extends VBox {
 		amountField.setPromptText("Amount");
 		amountField.setPrefWidth(300);
 
-		Button cashInButton = new Button("Cash In");
+		Button cashInButton = Parts.primaryButton("Cash In");
 		cashInButton.setOnAction(event -> recordEntry(true));
 		Button cashOutButton = new Button("Cash Out");
 		cashOutButton.setOnAction(event -> recordEntry(false));

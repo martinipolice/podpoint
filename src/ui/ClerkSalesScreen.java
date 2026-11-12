@@ -72,16 +72,17 @@ public class ClerkSalesScreen extends VBox {
 			}
 		}
 
-		Label title = new Label("Pod Point - Clerk Sales");
+		Label title = Parts.title("Clerk Sales");
 		clerkList = new ListView<>();
 		clerkList.setPrefHeight(120);
 		salesList = new ListView<>();
+		salesList.setPlaceholder(Parts.emptyHint("Select a clerk and click Show Sales."));
 		salesList.setPrefHeight(250);
 		Label message = new Label("");
 
 		showClerks();
 
-		Button showButton = new Button("Show Sales");
+		Button showButton = Parts.primaryButton("Show Sales");
 		showButton.setOnAction(event -> {
 			int index = clerkList.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
@@ -96,10 +97,10 @@ public class ClerkSalesScreen extends VBox {
 		setSpacing(10);
 		setPadding(new Insets(10));
 		getChildren().add(title);
-		getChildren().add(new Label("Clerks"));
+		getChildren().add(Parts.section("Clerks"));
 		getChildren().add(clerkList);
 		getChildren().add(showButton);
-		getChildren().add(new Label("Sales of the selected clerk"));
+		getChildren().add(Parts.section("Sales of the selected clerk"));
 		getChildren().add(salesList);
 		getChildren().add(message);
 	}

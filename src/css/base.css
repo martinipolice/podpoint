@@ -1,12 +1,17 @@
+/* base.css - colors, font and the look of the window.
+   The named colors below are used by the other CSS files. */
+
 .root {
 	-cocoa: #4A2C1A;
 	-terracotta: #B5502A;
-	-leaf: #6F8F4A;
+	-leaf: #4F6F32;
 	-surface: #F7F5F2;
 	-card: #FFFFFF;
 	-line: #DDD5CC;
 	-text: #2B1D15;
 	-muted: #6F6358;
+	-danger: #B3261E;
+	-cream: #F4E7D6;
 
 	-fx-font-family: "Segoe UI";
 	-fx-font-size: 14px;
@@ -15,4 +20,11 @@
 
 .label {
 	-fx-text-fill: -text;
+}
+
+/* the big heading at the top of every screen */
+.page-title {
+	-fx-font-size: 20px;
+	-fx-font-weight: bold;
+	-fx-text-fill: -cocoa;
 }

@@ -62,12 +62,13 @@ public class SalesScreen extends VBox {
 		inventory = FileHandler.loadInventory();
 		cart = new ArrayList<SaleLine>();
 
-		Label title = new Label("Pod Point - New Sale");
+		Label title = Parts.title("New Sale");
 		productList = new ListView<>();
 		productList.setPrefHeight(180);
 		cartList = new ListView<>();
+		cartList.setPlaceholder(Parts.emptyHint("Your cart is empty. Add a product to start a sale."));
 		cartList.setPrefHeight(130);
-		totalLabel = new Label("Total: PHP 0.00");
+		totalLabel = Parts.highlight("Total: PHP 0.00");
 		Label message = new Label("");
 
 		TextField qtyField = new TextField();
@@ -108,7 +109,7 @@ public class SalesScreen extends VBox {
 			message.setText("Cart cleared.");
 		});
 		
-		Button checkoutButton = new Button("Checkout");
+		Button checkoutButton = Parts.primaryButton("Checkout");
 		checkoutButton.setOnAction(event -> {
 			if (cart.isEmpty()) {
 				message.setText("Cart is empty.");
@@ -158,10 +159,10 @@ public class SalesScreen extends VBox {
 		setSpacing(10);
 		setPadding(new Insets(10));
 		getChildren().add(title);
-		getChildren().add(new Label("Products"));
+		getChildren().add(Parts.section("Products"));
 		getChildren().add(productList);
 		getChildren().add(qtyRow);
-		getChildren().add(new Label("Cart"));
+		getChildren().add(Parts.section("Cart"));
 		getChildren().add(cartList);
 		getChildren().add(totalLabel);
 		HBox buttonRow = new HBox(10);

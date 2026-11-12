@@ -56,13 +56,13 @@ public class InventoryScreen extends VBox {
 	public InventoryScreen(User user) {
 		inventory = FileHandler.loadInventory();
 
-		Label title = new Label("Pod Point - Inventory");
+		Label title = Parts.title("Inventory");
 		list = new ListView<>();
 		Label message = new Label("");
 		TextField amountField = new TextField();
 		amountField.setPromptText("Amount to add");
 
-		Button restockButton = new Button("Restock");
+		Button restockButton = Parts.primaryButton("Restock");
 		restockButton.setOnAction(event -> {
 			int index = list.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
@@ -89,7 +89,7 @@ public class InventoryScreen extends VBox {
 		TextField newPriceField = new TextField();
 		newPriceField.setPromptText("New price");
 
-		Button priceButton = new Button("Update Price");
+		Button priceButton = Parts.primaryButton("Update Price");
 		priceButton.setOnAction(event -> {
 			int index = list.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
@@ -128,7 +128,7 @@ public class InventoryScreen extends VBox {
 		TextField qtyField = new TextField();
 		qtyField.setPromptText("Starting stock");
 
-		Button addButton = new Button("Add Product");
+		Button addButton = Parts.primaryButton("Add Product");
 		addButton.setOnAction(event -> {
 			String name = nameField.getText().trim();
 			String desc = descField.getText().trim();
@@ -176,14 +176,14 @@ public class InventoryScreen extends VBox {
 		getChildren().add(list);
 
 		if (user.canManageProducts()) {
-			getChildren().add(new Label("Restock selected product"));
+			getChildren().add(Parts.section("Restock selected product"));
 			getChildren().add(labeledField("Amount to add:", amountField));
 			getChildren().add(restockButton);
-			getChildren().add(new Label("Change price of selected product"));
+			getChildren().add(Parts.section("Change price of selected product"));
 			getChildren().add(labeledField("New price:", newPriceField));
 			getChildren().add(priceButton);
 
-			getChildren().add(new Label("Add a new product"));
+			getChildren().add(Parts.section("Add a new product"));
 			getChildren().add(labeledField("Name:", nameField));
 			getChildren().add(labeledField("Description:", descField));
 			getChildren().add(labeledField("Size:", sizeField));
@@ -192,7 +192,7 @@ public class InventoryScreen extends VBox {
 			getChildren().add(labeledField("Starting stock:", qtyField));
 			getChildren().add(addButton);
 		} else {
-			getChildren().add(new Label("View only. Only the Manager can change products."));
+			getChildren().add(Parts.emptyHint("View only. Only the Manager can change products."));
 		}
 
 		getChildren().add(message);

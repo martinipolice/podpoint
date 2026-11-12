@@ -2,10 +2,13 @@ package ui;
 
 import app.Main;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import model.User;
 import util.Accounts;
@@ -20,8 +23,10 @@ import util.Accounts;
 public class LoginScreen extends VBox {
 
 	public LoginScreen(Main main) {
-		Label title = new Label("Welcome to Pod Point");
-		Label subtitle = new Label("Please log in");
+		// the logo is loaded from the resources folder of the project
+		ImageView logo = new ImageView(new Image("file:resources/logo_text.png", 180, 0, true, true));
+
+		Label title = Parts.title("Log in");
 
 		TextField usernameField = new TextField();
 		usernameField.setPromptText("Username");
@@ -32,8 +37,9 @@ public class LoginScreen extends VBox {
 		passwordField.setMaxWidth(250);
 
 		Label message = new Label("");
+		message.getStyleClass().add("text-danger");
 
-		Button loginButton = new Button("Log In");
+		Button loginButton = Parts.primaryButton("Log In");
 		loginButton.setOnAction(event -> {
 			String username = usernameField.getText().trim();
 			String password = passwordField.getText();
@@ -52,10 +58,12 @@ public class LoginScreen extends VBox {
 			}
 		});
 
+		getStyleClass().add("login");
+		setAlignment(Pos.CENTER);
 		setSpacing(10);
-		setPadding(new Insets(40));
+		setPadding(new Insets(30));
+		getChildren().add(logo);
 		getChildren().add(title);
-		getChildren().add(subtitle);
 		getChildren().add(usernameField);
 		getChildren().add(passwordField);
 		getChildren().add(loginButton);

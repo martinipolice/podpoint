@@ -2,6 +2,7 @@ package app;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.User;
 import ui.Dashboard;
@@ -24,6 +25,7 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		this.stage = stage;
 		stage.setTitle("Pod Point");
+		stage.getIcons().add(new Image("file:resources/logo.png"));
 		showLogin();
 		stage.show();
 	}

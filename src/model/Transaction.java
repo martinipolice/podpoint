@@ -62,4 +62,9 @@ public abstract class Transaction implements Serializable {
 	// what happens to the stock when this is voided (nothing by default)
 	public void undoEffect(Inventory inventory) {
 	}
+	
+	// a plain Transaction is not a sale; SaleTransaction says yes
+	public boolean isSale() {
+		return false;
+	}
 }

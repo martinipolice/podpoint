@@ -21,4 +21,8 @@ public class Manager extends User {
 	public boolean canManageProducts() {
 		return true;
 	}
+	
+	public boolean canVoidTransactions() {
+		return false;
+	}
 }

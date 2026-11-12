@@ -9,6 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import model.Inventory;
 import model.Transaction;
+import model.User;
 import util.FileHandler;
 
 /***********************************************************
@@ -46,7 +47,7 @@ public class HistoryScreen extends VBox {
 	
 	
 
-	public HistoryScreen() {
+	public HistoryScreen(User user) {
 		history = FileHandler.loadTransactions();
 
 		Label title = new Label("Pod Point - Transaction History");
@@ -85,7 +86,9 @@ public class HistoryScreen extends VBox {
 		getChildren().add(title);
 		getChildren().add(historyList);
 		getChildren().add(balanceLabel);
-		getChildren().add(voidButton);
+		if (user.canVoidTransactions()) {
+			getChildren().add(voidButton);
+		}
 		getChildren().add(message);
 	}
 }

@@ -21,4 +21,8 @@ public class Clerk extends User {
 	public boolean canManageProducts() {
 		return false;
 	}
+	
+	public boolean canVoidTransactions() {
+		return true;
+	}
 }

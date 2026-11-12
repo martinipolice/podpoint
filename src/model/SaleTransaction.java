@@ -47,4 +47,8 @@ public class SaleTransaction extends Transaction {
 			inventory.restock(p.getName(), p.getSize(), line.getQuantity());
 		}
 	}
+	
+	public boolean isSale() {
+		return true;
+	}
 }

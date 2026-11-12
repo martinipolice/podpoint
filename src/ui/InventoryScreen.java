@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import model.Inventory;
 import model.InventoryItem;
 import model.Product;
+import model.User;
 import util.FileHandler;
 
 /***********************************************************
@@ -52,7 +53,7 @@ public class InventoryScreen extends VBox {
 		return row;
 	}
 
-	public InventoryScreen() {
+	public InventoryScreen(User user) {
 		inventory = FileHandler.loadInventory();
 
 		Label title = new Label("Pod Point - Inventory");
@@ -174,21 +175,25 @@ public class InventoryScreen extends VBox {
 		getChildren().add(title);
 		getChildren().add(list);
 
-		getChildren().add(new Label("Restock selected product"));
-		getChildren().add(labeledField("Amount to add:", amountField));
-		getChildren().add(restockButton);
-		getChildren().add(new Label("Change price of selected product"));
-		getChildren().add(labeledField("New price:", newPriceField));
-		getChildren().add(priceButton);
+		if (user.canManageProducts()) {
+			getChildren().add(new Label("Restock selected product"));
+			getChildren().add(labeledField("Amount to add:", amountField));
+			getChildren().add(restockButton);
+			getChildren().add(new Label("Change price of selected product"));
+			getChildren().add(labeledField("New price:", newPriceField));
+			getChildren().add(priceButton);
 
-		getChildren().add(new Label("Add a new product"));
-		getChildren().add(labeledField("Name:", nameField));
-		getChildren().add(labeledField("Description:", descField));
-		getChildren().add(labeledField("Size:", sizeField));
-		getChildren().add(labeledField("Price (PHP):", priceField));
-		getChildren().add(labeledField("Category:", categoryField));
-		getChildren().add(labeledField("Starting stock:", qtyField));
-		getChildren().add(addButton);
+			getChildren().add(new Label("Add a new product"));
+			getChildren().add(labeledField("Name:", nameField));
+			getChildren().add(labeledField("Description:", descField));
+			getChildren().add(labeledField("Size:", sizeField));
+			getChildren().add(labeledField("Price (PHP):", priceField));
+			getChildren().add(labeledField("Category:", categoryField));
+			getChildren().add(labeledField("Starting stock:", qtyField));
+			getChildren().add(addButton);
+		} else {
+			getChildren().add(new Label("View only. Only the Manager can change products."));
+		}
 
 		getChildren().add(message);
 	}

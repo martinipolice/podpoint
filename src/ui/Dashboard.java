@@ -25,12 +25,14 @@ public class Dashboard extends BorderPane {
 		Button historyButton = new Button("History");
 		Button cashButton = new Button("Cash");
 		Button logoutButton = new Button("Logout");
+		Button clerkSalesButton = new Button("Clerk Sales");
 
 		// each click puts a fresh screen in the middle of the window
-		inventoryButton.setOnAction(event -> setCenter(new InventoryScreen()));
+		inventoryButton.setOnAction(event -> setCenter(new InventoryScreen(user)));
 		salesButton.setOnAction(event -> setCenter(new SalesScreen(user)));
-		historyButton.setOnAction(event -> setCenter(new HistoryScreen()));
+		historyButton.setOnAction(event -> setCenter(new HistoryScreen(user)));
 		cashButton.setOnAction(event -> setCenter(new CashScreen(user)));
+		clerkSalesButton.setOnAction(event -> setCenter(new ClerkSalesScreen()));
 		logoutButton.setOnAction(event -> main.showLogin());
 
 		Label whoLabel = new Label("Logged in as " + user.getFullName() + " (" + user.getRole() + ")");
@@ -42,7 +44,8 @@ public class Dashboard extends BorderPane {
 			// Manager menu: manages products and reviews the history
 			menu.getChildren().add(inventoryButton);
 			menu.getChildren().add(historyButton);
-			setCenter(new InventoryScreen());
+			menu.getChildren().add(clerkSalesButton);
+			setCenter(new InventoryScreen(user));
 		} else {
 			// Clerk menu: records sales and cash, checks inventory, voids in History
 			menu.getChildren().add(salesButton);

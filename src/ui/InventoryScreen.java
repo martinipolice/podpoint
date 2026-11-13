@@ -98,7 +98,7 @@ public class InventoryScreen extends VBox {
 			}
 			try {
 				double newPrice = Double.parseDouble(newPriceField.getText());
-				if (newPrice <= 0) {
+				if (newPrice <= 0 || Double.isNaN(newPrice) || Double.isInfinite(newPrice)) {
 					message.setText("Price must be above 0.");
 					return;
 				}
@@ -142,7 +142,7 @@ public class InventoryScreen extends VBox {
 			try {
 				double price = Double.parseDouble(priceField.getText());
 				int qty = Integer.parseInt(qtyField.getText());
-				if (price <= 0 || qty < 0) {
+				if (price <= 0 || Double.isNaN(price) || Double.isInfinite(price) || qty < 0) {
 					message.setText("Price must be above 0 and stock cannot be negative.");
 					return;
 				}

@@ -12,7 +12,8 @@ import model.Inventory;
 import model.Transaction;
 
 /***********************************************************
- * Saves and loads the product list using serialization.
+ * Saves and loads the products, the inventory and the transaction history
+ * using serialization.
  *
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-10-25 

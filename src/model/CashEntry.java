@@ -14,7 +14,7 @@ public class CashEntry extends Transaction {
 
 	public CashEntry(String clerkName, String description, double amount, boolean cashIn) {
 		super(clerkName);
-		if (amount <= 0) {
+		if (amount <= 0 || Double.isNaN(amount) || Double.isInfinite(amount)) {
 			throw new IllegalArgumentException("Amount must be more than 0.");
 		}
 		this.description = description;

@@ -5,6 +5,14 @@ import model.Clerk;
 import model.Manager;
 import model.User;
 
+/***********************************************************
+ * Console test for the User classes (Manager and Clerk):
+ * roles, permissions and the password check.
+ *
+ * @author CHARLES GIAN L. SANTOS
+ * @created_date 2026-11-11 
+ ***********************************************************/
+
 public class UserTest {
 
 	public static void main(String[] args) {

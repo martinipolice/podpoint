@@ -3,3 +3,10 @@
 .login {
 	-fx-background-color: -cream;
 }
+
+/* the "pod point" name under the logo, in a serif font like the logo */
+.wordmark {
+	-fx-font-family: "Georgia";
+	-fx-font-size: 34px;
+	-fx-text-fill: -cocoa;
+}

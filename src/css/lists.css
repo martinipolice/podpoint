@@ -29,3 +29,12 @@
 	-fx-background-color: -terracotta;
 	-fx-text-fill: white;
 }
+
+/* rows with a status (see StatusCell): low stock is amber, voided is gray */
+.list-cell.row-low {
+	-fx-text-fill: #8A5300;
+}
+
+.list-cell.row-voided {
+	-fx-text-fill: -muted;
+}

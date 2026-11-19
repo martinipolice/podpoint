@@ -21,6 +21,7 @@
 .text-muted      { -fx-text-fill: -muted; }
 .text-danger     { -fx-text-fill: -danger; }
 .text-white      { -fx-text-fill: white; }
+.text-warn       { -fx-text-fill: #8A5300; }
 
 /* background color */
 .bg-surface    { -fx-background-color: -surface; }

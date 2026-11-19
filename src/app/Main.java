@@ -26,20 +26,22 @@ public class Main extends Application {
 		this.stage = stage;
 		stage.setTitle("Pod Point");
 		stage.getIcons().add(new Image("file:resources/logo.png"));
+		stage.setMinWidth(900);
+		stage.setMinHeight(640);
 		showLogin();
 		stage.show();
 	}
 
 	// the Welcome/Login window
 	public void showLogin() {
-		Scene scene = new Scene(new LoginScreen(this), 650, 820);
+		Scene scene = new Scene(new LoginScreen(this), 1000, 700);
 		Theme.apply(scene);
 		stage.setScene(scene);
 	}
 
 	// the main window after a correct login
 	public void showDashboard(User user) {
-		Scene scene = new Scene(new Dashboard(this, user), 650, 820);
+		Scene scene = new Scene(new Dashboard(this, user), 1000, 700);
 		Theme.apply(scene);
 		stage.setScene(scene);
 	}

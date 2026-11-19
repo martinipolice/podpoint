@@ -45,3 +45,21 @@
 .button.danger:hover {
 	-fx-background-color: #FBEAE8;
 }
+
+/* the red filled button: the second click that confirms a void */
+.button.danger-fill {
+	-fx-background-color: -danger;
+	-fx-border-color: -danger;
+	-fx-text-fill: white;
+}
+
+.button.danger-fill:hover {
+	-fx-background-color: #8F1D17;
+	-fx-border-color: #8F1D17;
+}
+
+/* a button that cannot be used yet (for example nothing is selected) */
+.button:disabled {
+	-fx-opacity: 0.45;
+	-fx-cursor: default;
+}

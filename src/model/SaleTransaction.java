@@ -2,11 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
-/***
+/***********************************************************
  * One customer purchase. It is a Transaction that holds a list of SaleLines.
  * @author Charles Gian L. Santos
- * @created_date 2026-11-02 08:35
- ***/
+ * @created_date 2026-11-02
+  ***********************************************************/
 
 public class SaleTransaction extends Transaction {
 	private ArrayList<SaleLine> lines;

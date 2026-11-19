@@ -7,7 +7,7 @@ import java.io.Serializable;
  * and the price at the time of the sale.
  * @author Charles Gian L. Santos
  * @created_date 2026-11-02 08:25
- ***/
+ ***********************************************************/
 
 public class SaleLine implements Serializable {
 	private Product product;

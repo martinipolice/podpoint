@@ -3,7 +3,7 @@
 .text-field, .password-field {
 	-fx-background-color: -card;
 	-fx-background-radius: 6;
-	-fx-border-color: -line;
+	-fx-border-color: #8F8174;
 	-fx-border-radius: 6;
 	-fx-padding: 7 10 7 10;
 	-fx-prompt-text-fill: -muted;

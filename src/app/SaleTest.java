@@ -7,11 +7,12 @@ import model.SaleTransaction;
 import model.Transaction;
 import util.FileHandler;
 
-/***
+/***********************************************************
  * Console test for SaleLine, Transaction and SaleTransaction.
  * @author Charles Gian L. Santos
- * @created_date 2026-11-02 08:40
- ***/
+ * @created_date 2026-11-02 
+ ***********************************************************/
+
 public class SaleTest {
 	public static void main(String[] args) {
 		Inventory inventory = FileHandler.loadInventory();

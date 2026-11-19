@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.CashEntry;
 import model.Transaction;
@@ -13,19 +15,21 @@ import model.User;
 import util.FileHandler;
 
 /***********************************************************
- * The cash screen. The Clerk records cash in and cash out
- * and sees the current balance of the cash box.
+ * The cash screen. The title is on top. Under it, the Clerk records cash
+ * in and cash out on the left and sees the current balance of the cash
+ * box. The card on the right shows the recent cash entries.
  *
  * @author CHARLES GIAN L. SANTOS
- * @created_date 2026-11-08 
+ * @created_date 2026-11-08
  ***********************************************************/
 
 public class CashScreen extends VBox {
 
 	private TextField descField;
 	private TextField amountField;
-	private Label balanceLabel;
+	private Label balanceValue;
 	private Label message;
+	private ListView<String> entryList;
 	private User user;
 
 	// adds up the totals of the transactions that are not voided
@@ -39,16 +43,25 @@ public class CashScreen extends VBox {
 		return balance;
 	}
 
-	private void showBalance() {
-		double balance = balanceOf(FileHandler.loadTransactions());
-		balanceLabel.setText("Current balance: PHP " + String.format("%.2f", balance));
+	// updates the balance and the list of cash entries (newest first)
+	private void refresh() {
+		ArrayList<Transaction> history = FileHandler.loadTransactions();
+		balanceValue.setText("PHP " + String.format("%.2f", balanceOf(history)));
+
+		entryList.getItems().clear();
+		for (int i = history.size() - 1; i >= 0; i--) {
+			Transaction t = history.get(i);
+			if (!t.isSale()) {
+				entryList.getItems().add(Parts.transactionLine(t));
+			}
+		}
 	}
 
 	// records one cash entry (cashIn is true for money in, false for money out)
 	private void recordEntry(boolean cashIn) {
 		String description = descField.getText().trim();
 		if (description.isEmpty()) {
-			message.setText("Please type a description.");
+			Parts.error(message, "Please type a description.");
 			return;
 		}
 		try {
@@ -58,7 +71,7 @@ public class CashScreen extends VBox {
 			ArrayList<Transaction> history = FileHandler.loadTransactions();
 			double balance = balanceOf(history);
 			if (!cashIn && amount > balance) {
-				message.setText("Not enough cash. Balance is PHP " + String.format("%.2f", balance) + ".");
+				Parts.error(message, "Not enough cash. Balance is PHP " + String.format("%.2f", balance) + ".");
 				return;
 			}
 
@@ -66,56 +79,73 @@ public class CashScreen extends VBox {
 			history.add(entry);
 			FileHandler.saveTransactions(history);
 
-			showBalance();
-			message.setText("Recorded entry #" + entry.getId() + ".");
+			refresh();
+			Parts.success(message, "Recorded entry #" + entry.getId() + ".");
 			descField.clear();
 			amountField.clear();
 		} catch (NumberFormatException e) {
-			message.setText("Amount must be a number.");
+			Parts.error(message, "Amount must be a number.");
 		} catch (IllegalArgumentException e) {
-			message.setText(e.getMessage());
+			Parts.error(message, e.getMessage());
 		}
 	}
 
 	public CashScreen(User user) {
 		this.user = user;
 		Label title = Parts.title("Cash");
-		balanceLabel = Parts.highlight("");
-		message = new Label("");
+		balanceValue = new Label("");
+		message = Parts.message();
 
 		descField = new TextField();
 		descField.setPromptText("e.g. Starting cash, Delivery fee");
-		descField.setPrefWidth(300);
 		amountField = new TextField();
-		amountField.setPromptText("Amount");
-		amountField.setPrefWidth(300);
+		amountField.setPromptText("0.00");
 
 		Button cashInButton = Parts.primaryButton("Cash In");
 		cashInButton.setOnAction(event -> recordEntry(true));
 		Button cashOutButton = new Button("Cash Out");
 		cashOutButton.setOnAction(event -> recordEntry(false));
 
-		showBalance();
+		entryList = new ListView<>();
+		entryList.setPlaceholder(Parts.placeholder("No cash in or out yet. The balance so far comes from sales."));
+		Parts.statusRows(entryList);
+		VBox.setVgrow(entryList, Priority.ALWAYS);
 
-		HBox descRow = new HBox(10);
-		descRow.getChildren().add(new Label("Description:"));
-		descRow.getChildren().add(descField);
-
-		HBox amountRow = new HBox(10);
-		amountRow.getChildren().add(new Label("Amount (PHP):"));
-		amountRow.getChildren().add(amountField);
+		refresh();
 
 		HBox buttonRow = new HBox(10);
 		buttonRow.getChildren().add(cashInButton);
 		buttonRow.getChildren().add(cashOutButton);
 
-		setSpacing(10);
-		setPadding(new Insets(10));
+		VBox formCard = Parts.card();
+		formCard.getChildren().add(Parts.section("Record cash"));
+		formCard.getChildren().add(Parts.fieldWithCaption("Description", descField));
+		formCard.getChildren().add(Parts.fieldWithCaption("Amount (PHP)", amountField));
+		formCard.getChildren().add(buttonRow);
+		formCard.getChildren().add(message);
+
+		// left column: the balance (main tile) and the form
+		VBox left = new VBox(12);
+		left.setPrefWidth(380);
+		left.setMinWidth(380);
+		left.getChildren().add(Parts.primaryTile(balanceValue, "Current balance"));
+		left.getChildren().add(formCard);
+
+		// right column: the recent cash entries in a card
+		VBox right = Parts.card();
+		right.getChildren().add(Parts.section("Recent cash entries"));
+		right.getChildren().add(entryList);
+		HBox.setHgrow(right, Priority.ALWAYS);
+
+		// the two columns sit side by side, under the title
+		HBox body = new HBox(16);
+		body.getChildren().add(left);
+		body.getChildren().add(right);
+		VBox.setVgrow(body, Priority.ALWAYS);
+
+		setSpacing(12);
+		setPadding(new Insets(16));
 		getChildren().add(title);
-		getChildren().add(balanceLabel);
-		getChildren().add(descRow);
-		getChildren().add(amountRow);
-		getChildren().add(buttonRow);
-		getChildren().add(message);
+		getChildren().add(body);
 	}
 }

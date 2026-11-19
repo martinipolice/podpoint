@@ -8,12 +8,12 @@ import model.SaleTransaction;
 import model.Transaction;
 import util.FileHandler;
 
-/***
+/***********************************************************
  * Console test: saves the transaction history to a file and loads it back.
  * Run it twice to see the saved transactions come back.
  * @author Charles Gian L. Santos
  * @created_date 2026-11-05 
- ***/
+ ***********************************************************/
 
 public class TransactionFileTest {
 	public static void main(String[] args) {

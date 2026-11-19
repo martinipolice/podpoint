@@ -8,7 +8,7 @@ import javafx.scene.Scene;
  * win over earlier ones, so utilities.css is last.
  *
  * @author CHARLES GIAN L. SANTOS
- * @created_date 2026-11-12 12:30
+ * @created_date 2026-11-12
  ***********************************************************/
 public class Theme {
 

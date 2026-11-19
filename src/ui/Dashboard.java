@@ -64,7 +64,9 @@ public class Dashboard extends BorderPane {
 		logoBadge.getStyleClass().add("logo-badge");
 		logoBadge.getChildren().add(logo);
 
-		Label whoLabel = new Label(user.getFullName() + " (" + user.getRole() + ")");
+		Label whoLabel = new Label(user.getFullName());
+		Label roleBadge = new Label(user.getRole());
+		roleBadge.getStyleClass().add("role-badge");
 
 		// an empty space that pushes the name and Log Out to the right
 		Region spacer = new Region();
@@ -72,7 +74,8 @@ public class Dashboard extends BorderPane {
 
 		HBox menu = new HBox(10);
 		menu.getStyleClass().add("top-bar");
-		menu.setPadding(new Insets(10));
+		// 10 above and below, 16 on the sides like the padding of every screen
+		menu.setPadding(new Insets(10, 16, 10, 16));
 		menu.getChildren().add(logoBadge);
 
 		if (user.canManageProducts()) {
@@ -92,6 +95,7 @@ public class Dashboard extends BorderPane {
 
 		menu.getChildren().add(spacer);
 		menu.getChildren().add(whoLabel);
+		menu.getChildren().add(roleBadge);
 		menu.getChildren().add(logoutButton);
 		setTop(menu);
 	}

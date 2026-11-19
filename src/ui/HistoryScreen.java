@@ -1,95 +1,143 @@
 package ui;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
 import model.Inventory;
 import model.Transaction;
 import model.User;
 import util.FileHandler;
 
 /***********************************************************
- * The transaction history screen. Shows every sale and cash entry
- * and the cash balance (voided transactions are not counted).
+ * The transaction history screen. Shows every sale and cash entry,
+ * the cash balance (voided transactions are not counted) and, for
+ * the Clerk, a button to void a transaction.
  *
  * @author CHARLES GIAN L. SANTOS
- * @created_date 2026-11-07 
+ * @created_date 2026-11-07
  ***********************************************************/
 
 public class HistoryScreen extends VBox {
 
 	private ArrayList<Transaction> history;
 	private ListView<String> historyList;
-	private Label balanceLabel;
+	private Label balanceValue;
+	private Label countValue;
+	private Label voidedValue;
+	private Transaction pendingVoid;   // the transaction waiting for the second (confirm) click
 
-	// fills the list with one line per transaction and updates the balance
+	// puts the Void button back to its normal look and forgets the pending void
+	private void resetVoidButton(Button button) {
+		pendingVoid = null;
+		button.setText("Void Selected");
+		button.getStyleClass().remove("danger-fill");
+		if (!button.getStyleClass().contains("danger")) {
+			button.getStyleClass().add("danger");
+		}
+	}
+
+	// fills the list with one line per transaction and updates the tiles
 	private void showHistory() {
 		historyList.getItems().clear();
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
 		double balance = 0;
+		int voided = 0;
 		for (Transaction t : history) {
-			String line = "#" + t.getId() + " | " + t.getDescription() + " | " + t.getClerkName()
-					+ " | " + t.getDate().format(format)
-					+ " | PHP " + String.format("%.2f", t.getTotal());
+			historyList.getItems().add(Parts.transactionLine(t));
 			if (t.isVoided()) {
-				line = line + "  [VOIDED]";
+				voided++;
 			} else {
 				balance = balance + t.getTotal();
 			}
-			historyList.getItems().add(line);
 		}
-		balanceLabel.setText("Balance: PHP " + String.format("%.2f", balance));
+		balanceValue.setText("PHP " + String.format("%.2f", balance));
+		countValue.setText(String.valueOf(history.size()));
+		voidedValue.setText(String.valueOf(voided));
 	}
-	
-	
 
 	public HistoryScreen(User user) {
 		history = FileHandler.loadTransactions();
 
 		Label title = Parts.title("Transaction History");
 		historyList = new ListView<>();
-		historyList.setPlaceholder(Parts.emptyHint("No transactions yet."));
-		historyList.setPrefHeight(300);
-		balanceLabel = Parts.highlight("");
+		historyList.setPlaceholder(Parts.placeholder("No transactions yet."));
+		Parts.statusRows(historyList);
+		VBox.setVgrow(historyList, Priority.ALWAYS);
+
+		balanceValue = new Label("");
+		countValue = new Label("");
+		voidedValue = new Label("");
 
 		showHistory();
-		
-		Label message = new Label("");
+
+		Label message = Parts.message();
 
 		Button voidButton = Parts.dangerButton("Void Selected");
+		voidButton.setDisable(true);
+
+		// the button works only for a selected transaction that is not voided yet.
+		// Selecting another row also cancels a pending void.
+		historyList.getSelectionModel().selectedItemProperty().addListener((obs, oldItem, newItem) -> {
+			resetVoidButton(voidButton);
+			Parts.clear(message);
+			int index = historyList.getSelectionModel().getSelectedIndex();
+			voidButton.setDisable(index == -1 || history.get(index).isVoided());
+		});
+
 		voidButton.setOnAction(event -> {
 			int index = historyList.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
-				message.setText("Select a transaction first.");
+				Parts.error(message, "Select a transaction first.");
 				return;
 			}
 			Transaction t = history.get(index);
 			if (t.isVoided()) {
-				message.setText("Transaction #" + t.getId() + " is already voided.");
+				Parts.error(message, "Transaction #" + t.getId() + " is already voided.");
 				return;
 			}
-			// mark it voided and let the transaction undo its own effect on the stock
+			// first click: ask for a second click to confirm
+			if (pendingVoid != t) {
+				pendingVoid = t;
+				voidButton.setText("Confirm Void #" + t.getId());
+				voidButton.getStyleClass().remove("danger");
+				voidButton.getStyleClass().add("danger-fill");
+				Parts.error(message, "Click again to void #" + t.getId() + ". Select another row to cancel.");
+				return;
+			}
+			// second click: back to the normal button, then mark it voided
+			// and let the transaction undo its own effect on the stock
 			Inventory inventory = FileHandler.loadInventory();
+			resetVoidButton(voidButton);
 			t.voidTransaction();
 			t.undoEffect(inventory);
 			FileHandler.saveInventory(inventory);
 			FileHandler.saveTransactions(history);
 			showHistory();
-			message.setText("Transaction #" + t.getId() + " voided.");
+			Parts.success(message, "Transaction #" + t.getId() + " voided.");
 		});
 
-		setSpacing(10);
-		setPadding(new Insets(10));
+		setSpacing(12);
+		setPadding(new Insets(16));
 		getChildren().add(title);
+		getChildren().add(Parts.tileRow(
+				Parts.primaryTile(balanceValue, "Cash balance"),
+				Parts.tile(countValue, "Transactions"),
+				Parts.tile(voidedValue, "Voided")));
 		getChildren().add(historyList);
-		getChildren().add(balanceLabel);
+
+		// only the user who can void gets the bottom row (an empty row would
+		// leave a gap that other screens do not have)
 		if (user.canVoidTransactions()) {
-			getChildren().add(voidButton);
+			HBox bottomRow = new HBox(12);
+			bottomRow.setAlignment(Pos.CENTER_LEFT);
+			bottomRow.getChildren().add(voidButton);
+			bottomRow.getChildren().add(message);
+			getChildren().add(bottomRow);
 		}
-		getChildren().add(message);
 	}
 }

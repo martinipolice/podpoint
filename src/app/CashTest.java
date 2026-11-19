@@ -7,11 +7,11 @@ import model.SaleLine;
 import model.SaleTransaction;
 import model.Transaction;
 
-/***
+/***********************************************************
  * Console test for CashEntry together with SaleTransaction.
  * @author Charles Gian L. Santos
  * @created_date 2026-11-04 
- ***/
+ ***********************************************************/
 
 public class CashTest {
 	public static void main(String[] args) {

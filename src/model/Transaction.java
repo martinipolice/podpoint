@@ -3,12 +3,12 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-/***
+/***********************************************************
  * Parent class of every transaction (a sale or a cash entry).
  * It keeps what they share: id, date, clerk and whether it was voided.
  * @author Charles Gian L. Santos
  * @created_date 2026-11-02 
- ***/
+ ***********************************************************/
 
 public abstract class Transaction implements Serializable {
 	// shared by all transactions, gives each one a new id (like the counter in your handout)

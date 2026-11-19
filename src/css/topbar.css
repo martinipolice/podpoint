@@ -30,3 +30,12 @@
 	-fx-background-radius: 8;
 	-fx-padding: 3;
 }
+
+/* the small pill with the role of the user (Manager or Clerk) */
+.top-bar .role-badge {
+	-fx-background-color: #5E3A28;
+	-fx-background-radius: 10;
+	-fx-padding: 2 10 2 10;
+	-fx-text-fill: -cream;
+	-fx-font-size: 12px;
+}

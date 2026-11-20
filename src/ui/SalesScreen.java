@@ -42,13 +42,7 @@ public class SalesScreen extends VBox {
 	private void showProducts() {
 		productList.getItems().clear();
 		for (InventoryItem item : inventory.getItems()) {
-			Product p = item.getProduct();
-			String line = p.getName() + " (" + p.getSize() + ") - PHP "
-					+ String.format("%.2f", p.getPrice()) + " | Stock: " + item.getQuantity();
-			if (item.isLow()) {
-				line = line + "  [LOW]";
-			}
-			productList.getItems().add(line);
+			productList.getItems().add(Parts.productLine(item));
 		}
 	}
 

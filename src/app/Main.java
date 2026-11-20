@@ -41,7 +41,13 @@ public class Main extends Application {
 
 	// the main window after a correct login
 	public void showDashboard(User user) {
-		Scene scene = new Scene(new Dashboard(this, user), 1000, 700);
+		showDashboard(user, null);
+	}
+
+	// the dashboard of a user that the Manager opened from Clerk Sales.
+	// It has a "Back to Manager" button. (manager is null after a normal login)
+	public void showDashboard(User user, User manager) {
+		Scene scene = new Scene(new Dashboard(this, user, manager), 1000, 700);
 		Theme.apply(scene);
 		stage.setScene(scene);
 	}

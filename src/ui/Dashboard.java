@@ -17,7 +17,9 @@ import model.User;
 /***********************************************************
  * The dashboard shown after login. The menu at the top depends
  * on the kind of user, and the screen in the middle is switched
- * with setCenter (window switching).
+ * with setCenter (window switching). The Manager has every screen
+ * and can also open the dashboard of a clerk (then a "Back to Manager"
+ * button is shown).
  *
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-11
@@ -36,7 +38,13 @@ public class Dashboard extends BorderPane {
 		button.getStyleClass().add("active");
 	}
 
+	// a normal dashboard, after a login
 	public Dashboard(Main main, User user) {
+		this(main, user, null);
+	}
+
+	// manager is the Manager who opened this clerk's dashboard; null after a normal login
+	public Dashboard(Main main, User user, User manager) {
 		Button inventoryButton = new Button("Inventory");
 		Button salesButton = new Button("Sales");
 		Button historyButton = new Button("History");
@@ -55,7 +63,7 @@ public class Dashboard extends BorderPane {
 		salesButton.setOnAction(event -> show(new SalesScreen(user), salesButton));
 		historyButton.setOnAction(event -> show(new HistoryScreen(user), historyButton));
 		cashButton.setOnAction(event -> show(new CashScreen(user), cashButton));
-		clerkSalesButton.setOnAction(event -> show(new ClerkSalesScreen(), clerkSalesButton));
+		clerkSalesButton.setOnAction(event -> show(new ClerkSalesScreen(main, user), clerkSalesButton));
 		logoutButton.setOnAction(event -> main.showLogin());
 
 		// small logo on a cream badge, so it can be seen on the dark bar
@@ -79,8 +87,10 @@ public class Dashboard extends BorderPane {
 		menu.getChildren().add(logoBadge);
 
 		if (user.canManageProducts()) {
-			// Manager menu: manages products and reviews the history
+			// Manager menu: full access, so every screen is here
 			menu.getChildren().add(inventoryButton);
+			menu.getChildren().add(salesButton);
+			menu.getChildren().add(cashButton);
 			menu.getChildren().add(historyButton);
 			menu.getChildren().add(clerkSalesButton);
 			show(new InventoryScreen(user), inventoryButton);
@@ -96,6 +106,12 @@ public class Dashboard extends BorderPane {
 		menu.getChildren().add(spacer);
 		menu.getChildren().add(whoLabel);
 		menu.getChildren().add(roleBadge);
+		if (manager != null) {
+			// the Manager is looking at a clerk's dashboard: a way back
+			Button backButton = new Button("Back to " + manager.getRole());
+			backButton.setOnAction(event -> main.showDashboard(manager));
+			menu.getChildren().add(backButton);
+		}
 		menu.getChildren().add(logoutButton);
 		setTop(menu);
 	}

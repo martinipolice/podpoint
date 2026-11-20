@@ -3,11 +3,14 @@ package model;
 /***********************************************************
  * A cash in or cash out entry in the shop's cash box (not a product sale).
  * It is a Transaction, so it has an id, date, clerk and a voided flag.
- * @author Charles Gian L. Santos
+ * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-04 
 ***********************************************************/
 
 public class CashEntry extends Transaction {
+	// fixed version number of this class, so saved data stays readable after small code changes
+	private static final long serialVersionUID = 1L;
+
 	private String description;
 	private double amount;
 	private boolean cashIn;

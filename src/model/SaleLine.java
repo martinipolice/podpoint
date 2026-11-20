@@ -5,11 +5,14 @@ import java.io.Serializable;
 /***
  * One line of a sale: a product, how many were bought,
  * and the price at the time of the sale.
- * @author Charles Gian L. Santos
+ * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-02 08:25
  ***********************************************************/
 
 public class SaleLine implements Serializable {
+	// fixed version number of this class, so saved data stays readable after small code changes
+	private static final long serialVersionUID = 1L;
+
 	private Product product;
 	private int quantity;
 	private double unitPrice;

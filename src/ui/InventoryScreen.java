@@ -41,15 +41,11 @@ public class InventoryScreen extends VBox {
 		int low = 0;
 		int units = 0;
 		for (InventoryItem item : inventory.getItems()) {
-			Product p = item.getProduct();
-			String line = p.getName() + " (" + p.getSize() + ") - PHP "
-					+ String.format("%.2f", p.getPrice()) + " | Stock: " + item.getQuantity();
 			if (item.isLow()) {
-				line = line + "  [LOW]";
 				low++;
 			}
 			units = units + item.getQuantity();
-			list.getItems().add(line);
+			list.getItems().add(Parts.productLine(item));
 		}
 		productsValue.setText(String.valueOf(inventory.getItems().size()));
 		lowValue.setText(String.valueOf(low));
@@ -109,7 +105,8 @@ public class InventoryScreen extends VBox {
 					Parts.success(message, "Restocked " + p.getName() + " by " + amount + ".");
 					amountField.clear();
 				} else {
-					Parts.error(message, "Amount must be more than 0.");
+					Parts.error(message, "Amount must be above 0, and the stock cannot go above "
+							+ Inventory.MAX_STOCK + ".");
 				}
 			} catch (NumberFormatException e) {
 				Parts.error(message, "Please type a whole number.");
@@ -176,8 +173,10 @@ public class InventoryScreen extends VBox {
 			try {
 				double price = Double.parseDouble(priceField.getText());
 				int qty = Integer.parseInt(qtyField.getText());
-				if (price <= 0 || Double.isNaN(price) || Double.isInfinite(price) || qty < 0) {
-					Parts.error(message, "Price must be above 0 and stock cannot be negative.");
+				if (price <= 0 || Double.isNaN(price) || Double.isInfinite(price)
+						|| qty < 0 || qty > Inventory.MAX_STOCK) {
+					Parts.error(message, "Price must be above 0 and stock must be from 0 to "
+							+ Inventory.MAX_STOCK + ".");
 					return;
 				}
 				if (inventory.findItem(name, size) != null) {

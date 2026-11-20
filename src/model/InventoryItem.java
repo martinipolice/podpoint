@@ -11,6 +11,9 @@ import util.InsufficientStockException;
  ***********************************************************/
 
 public class InventoryItem implements Serializable {
+	// fixed version number of this class, so saved data stays readable after small code changes
+	private static final long serialVersionUID = 1L;
+
 	// this item HAS a product (composition)
 	private Product product;
 	private int quantity;

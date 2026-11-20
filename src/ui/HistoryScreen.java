@@ -13,6 +13,7 @@ import model.Inventory;
 import model.Transaction;
 import model.User;
 import util.FileHandler;
+import util.PodSystem;
 
 /***********************************************************
  * The transaction history screen. Shows every sale and cash entry,
@@ -45,17 +46,14 @@ public class HistoryScreen extends VBox {
 	// fills the list with one line per transaction and updates the tiles
 	private void showHistory() {
 		historyList.getItems().clear();
-		double balance = 0;
 		int voided = 0;
 		for (Transaction t : history) {
 			historyList.getItems().add(Parts.transactionLine(t));
 			if (t.isVoided()) {
 				voided++;
-			} else {
-				balance = balance + t.getTotal();
 			}
 		}
-		balanceValue.setText("PHP " + String.format("%.2f", balance));
+		balanceValue.setText("PHP " + String.format("%.2f", PodSystem.balanceOf(history)));
 		countValue.setText(String.valueOf(history.size()));
 		voidedValue.setText(String.valueOf(voided));
 	}
@@ -96,8 +94,10 @@ public class HistoryScreen extends VBox {
 				return;
 			}
 			Transaction t = history.get(index);
-			if (t.isVoided()) {
-				Parts.error(message, "Transaction #" + t.getId() + " is already voided.");
+			// the rule lives in PodSystem: not already voided, and the balance stays 0 or more
+			String problem = PodSystem.voidProblem(history, t);
+			if (problem != null) {
+				Parts.error(message, problem);
 				return;
 			}
 			// first click: ask for a second click to confirm
@@ -113,8 +113,9 @@ public class HistoryScreen extends VBox {
 			// and let the transaction undo its own effect on the stock
 			Inventory inventory = FileHandler.loadInventory();
 			resetVoidButton(voidButton);
-			t.voidTransaction();
-			t.undoEffect(inventory);
+			if (t.voidTransaction()) {
+				t.undoEffect(inventory);
+			}
 			FileHandler.saveInventory(inventory);
 			FileHandler.saveTransactions(history);
 			showHistory();

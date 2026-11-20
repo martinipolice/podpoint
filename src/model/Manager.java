@@ -14,14 +14,20 @@ public class Manager extends User {
 		super(username, password, fullName);
 	}
 
+	// the name of this role, shown in the menu bar
+	@Override
 	public String getRole() {
 		return "Manager";
 	}
 
+	// only the Manager can add products, restock and change prices
+	@Override
 	public boolean canManageProducts() {
 		return true;
 	}
-	
+
+	// only the Clerk can void transactions
+	@Override
 	public boolean canVoidTransactions() {
 		return false;
 	}

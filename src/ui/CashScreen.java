@@ -13,6 +13,7 @@ import model.CashEntry;
 import model.Transaction;
 import model.User;
 import util.FileHandler;
+import util.PodSystem;
 
 /***********************************************************
  * The cash screen. The title is on top. Under it, the Clerk records cash
@@ -32,21 +33,10 @@ public class CashScreen extends VBox {
 	private ListView<String> entryList;
 	private User user;
 
-	// adds up the totals of the transactions that are not voided
-	private double balanceOf(ArrayList<Transaction> list) {
-		double balance = 0;
-		for (Transaction t : list) {
-			if (!t.isVoided()) {
-				balance = balance + t.getTotal();
-			}
-		}
-		return balance;
-	}
-
 	// updates the balance and the list of cash entries (newest first)
 	private void refresh() {
 		ArrayList<Transaction> history = FileHandler.loadTransactions();
-		balanceValue.setText("PHP " + String.format("%.2f", balanceOf(history)));
+		balanceValue.setText("PHP " + String.format("%.2f", PodSystem.balanceOf(history)));
 
 		entryList.getItems().clear();
 		for (int i = history.size() - 1; i >= 0; i--) {
@@ -69,7 +59,7 @@ public class CashScreen extends VBox {
 
 			// load first, so the new entry gets the next id
 			ArrayList<Transaction> history = FileHandler.loadTransactions();
-			double balance = balanceOf(history);
+			double balance = PodSystem.balanceOf(history);
 			if (!cashIn && amount > balance) {
 				Parts.error(message, "Not enough cash. Balance is PHP " + String.format("%.2f", balance) + ".");
 				return;

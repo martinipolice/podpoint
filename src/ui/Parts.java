@@ -9,6 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
+import model.InventoryItem;
+import model.Product;
 import model.Transaction;
 
 /***********************************************************
@@ -192,6 +194,18 @@ public class Parts {
 	// makes rows with [LOW] amber and rows with [VOIDED] gray
 	public static void statusRows(ListView<String> list) {
 		list.setCellFactory(view -> new StatusCell());
+	}
+
+	// one line of text for a product in a list: name, size, price and stock
+	// (with [LOW] when it is running out). Used by Inventory and Sales.
+	public static String productLine(InventoryItem item) {
+		Product p = item.getProduct();
+		String line = p.getName() + " (" + p.getSize() + ") - PHP "
+				+ String.format("%.2f", p.getPrice()) + " | Stock: " + item.getQuantity();
+		if (item.isLow()) {
+			line = line + "  [LOW]";
+		}
+		return line;
 	}
 
 	// one line of text for a transaction (used by History, Cash and Clerk Sales).

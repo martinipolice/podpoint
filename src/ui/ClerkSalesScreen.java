@@ -1,7 +1,9 @@
 package ui;
 
 import java.util.ArrayList;
+import app.Main;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -9,14 +11,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Transaction;
 import model.User;
-import util.Accounts;
 import util.FileHandler;
+import util.PodSystem;
 
 /***********************************************************
  * The Clerk Sales screen, for the Manager. The tiles show the sales of
  * all clerks. The list on the left shows each clerk with the number and
- * total of their sales; clicking a clerk shows their sale history on the
- * right. Voided sales are marked and not counted.
+ * total of their sales; selecting a clerk shows their sale history on the
+ * right. Voided sales are marked and not counted. The Open Dashboard
+ * button shows the dashboard of the selected clerk.
  *
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-12 
@@ -28,6 +31,16 @@ public class ClerkSalesScreen extends VBox {
 	private ListView<String> clerkList;
 	private ListView<String> salesList;
 	private Label salesHint;
+
+	// true if this name belongs to one of the clerk accounts
+	private boolean isClerk(String name) {
+		for (User c : clerks) {
+			if (c.getFullName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// one line per clerk: name, number of sales and total (voided sales not counted)
 	private void showClerks() {
@@ -57,23 +70,19 @@ public class ClerkSalesScreen extends VBox {
 		salesHint.setText(clerk.getFullName() + " has no sales yet.");
 	}
 
-	public ClerkSalesScreen() {
+	// main is used to open a clerk's dashboard; manager is the user who is looking
+	public ClerkSalesScreen(Main main, User manager) {
 		history = FileHandler.loadTransactions();
 
 		// the clerks are the accounts whose role is Clerk
-		clerks = new ArrayList<User>();
-		for (User u : Accounts.getUsers()) {
-			if (u.getRole().equals("Clerk")) {
-				clerks.add(u);
-			}
-		}
+		clerks = PodSystem.getClerks();
 
-		// numbers for the tiles (sales of all clerks)
+		// numbers for the tiles (sales made by the clerks)
 		int saleCount = 0;
 		int voidedCount = 0;
 		double saleTotal = 0;
 		for (Transaction t : history) {
-			if (t.isSale()) {
+			if (t.isSale() && isClerk(t.getClerkName())) {
 				if (t.isVoided()) {
 					voidedCount++;
 				} else {
@@ -109,12 +118,24 @@ public class ClerkSalesScreen extends VBox {
 			clerkList.getSelectionModel().select(0);
 		}
 
+		// shows the dashboard of the selected clerk (disabled while no clerk is selected)
+		Button openButton = Parts.primaryButton("Open Dashboard");
+		openButton.disableProperty().bind(clerkList.getSelectionModel().selectedItemProperty().isNull());
+		openButton.setOnAction(event -> {
+			int index = clerkList.getSelectionModel().getSelectedIndex();
+			if (index == -1) {
+				return;
+			}
+			main.showDashboard(clerks.get(index), manager);
+		});
+
 		// two cards with the same layout: a heading and a list
 		VBox left = Parts.card();
 		left.setPrefWidth(340);
 		left.setMinWidth(340);
 		left.getChildren().add(Parts.section("Clerks"));
 		left.getChildren().add(clerkList);
+		left.getChildren().add(openButton);
 
 		VBox right = Parts.card();
 		right.getChildren().add(Parts.section("Sales of the selected clerk"));

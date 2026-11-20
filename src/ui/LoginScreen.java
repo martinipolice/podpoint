@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import model.User;
-import util.Accounts;
+import util.PodSystem;
 
 /***********************************************************
  * The Welcome/Login screen. When the login is correct, it asks
@@ -51,7 +51,7 @@ public class LoginScreen extends VBox {
 				return;
 			}
 
-			User user = Accounts.login(username, password);
+			User user = PodSystem.login(username, password);
 			if (user == null) {
 				Parts.error(message, "Wrong username or password.");
 				passwordField.clear();

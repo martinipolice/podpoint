@@ -7,7 +7,7 @@ import util.FileHandler;
 /***********************************************************
  * Quick test of the Product class. Not part of the final app.
  *
- * @author <your name>
+ * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-10-25
  ***********************************************************/
 public class ProductTest {

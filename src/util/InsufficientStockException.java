@@ -8,6 +8,9 @@ package util;
  ***********************************************************/
 public class InsufficientStockException extends Exception {
 
+	// fixed version number of this class (exceptions are serializable too)
+	private static final long serialVersionUID = 1L;
+
 	// message explains what went wrong; getMessage() returns it later
 	public InsufficientStockException(String message) {
 		super(message);

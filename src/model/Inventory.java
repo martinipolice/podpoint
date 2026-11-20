@@ -11,6 +11,11 @@ import java.util.ArrayList;
  ***********************************************************/
 
 public class Inventory implements Serializable {
+	// fixed version number of this class, so saved data stays readable after small code changes
+	private static final long serialVersionUID = 1L;
+
+	// the most that one item can have in stock (stops a typing mistake from adding millions)
+	public static final int MAX_STOCK = 100000;
 
 	private ArrayList<InventoryItem> items;
 
@@ -38,10 +43,11 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
-	// adds stock to an existing item; returns false if the item is not found
+	// adds stock to an existing item; returns false if the item is not found,
+	// the amount is not above 0, or the stock would go above MAX_STOCK
 	public boolean restock(String name, String size, int amount) {
 		InventoryItem item = findItem(name, size);
-		if (item == null || amount <= 0) {
+		if (item == null || amount <= 0 || amount > MAX_STOCK - item.getQuantity()) {
 			return false;
 		}
 		item.setQuantity(item.getQuantity() + amount);

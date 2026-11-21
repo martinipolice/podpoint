@@ -11,7 +11,7 @@ import util.FileHandler;
 /***********************************************************
  * Console test: saves the transaction history to a file and loads it back.
  * Run it twice to see the saved transactions come back.
- * @author Charles Gian L. Santos
+ * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-05 
  ***********************************************************/
 

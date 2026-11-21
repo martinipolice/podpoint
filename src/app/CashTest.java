@@ -9,7 +9,7 @@ import model.Transaction;
 
 /***********************************************************
  * Console test for CashEntry together with SaleTransaction.
- * @author Charles Gian L. Santos
+ * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-04 
  ***********************************************************/
 

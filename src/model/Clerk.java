@@ -26,7 +26,7 @@ public class Clerk extends User {
 		return false;
 	}
 
-	// only the Clerk can void transactions
+	// a Clerk can void transactions 
 	@Override
 	public boolean canVoidTransactions() {
 		return true;

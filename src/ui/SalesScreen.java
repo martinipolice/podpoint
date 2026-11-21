@@ -58,6 +58,18 @@ public class SalesScreen extends VBox {
 		}
 		totalLabel.setText("Total: PHP " + String.format("%.2f", total));
 	}
+	
+	// how many of this product are already in the cart (same name and size)
+	private int inCart(Product product) {
+		int total = 0;
+		for (SaleLine line : cart) {
+			Product p = line.getProduct();
+			if (p.getName().equals(product.getName()) && p.getSize().equals(product.getSize())) {
+				total = total + line.getQuantity();
+			}
+		}
+		return total;
+	}
 
 	public SalesScreen(User user) {
 		inventory = FileHandler.loadInventory();
@@ -93,11 +105,15 @@ public class SalesScreen extends VBox {
 					Parts.error(message, "Quantity must be more than 0.");
 					return;
 				}
-				if (qty > item.getQuantity()) {
-					Parts.error(message, "Only " + item.getQuantity() + " left of "
-							+ item.getProduct().getName() + ".");
+				
+				// the stock minus what is already in the cart
+				int available = item.getQuantity() - inCart(item.getProduct());
+				if (qty > available) {
+					Parts.error(message, "Only " + available + " more of " + item.getProduct().getName()
+							+ " (" + item.getProduct().getSize() + ") can be added.");
 					return;
 				}
+				
 				cart.add(new SaleLine(item.getProduct(), qty));
 				showCart();
 				Parts.success(message, "Added to cart.");

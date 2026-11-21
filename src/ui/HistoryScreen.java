@@ -17,8 +17,8 @@ import util.PodSystem;
 
 /***********************************************************
  * The transaction history screen. Shows every sale and cash entry,
- * the cash balance (voided transactions are not counted) and, for
- * the Clerk, a button to void a transaction.
+ * the cash balance (voided transactions are not counted) and, 
+ * for users who can void, a button to void a transaction.
  *
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-07

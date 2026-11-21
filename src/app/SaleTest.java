@@ -9,7 +9,7 @@ import util.FileHandler;
 
 /***********************************************************
  * Console test for SaleLine, Transaction and SaleTransaction.
- * @author Charles Gian L. Santos
+ * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-02 
  ***********************************************************/
 

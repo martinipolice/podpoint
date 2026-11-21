@@ -1,8 +1,8 @@
 package model;
 
 /***********************************************************
- * A Manager adds products, restocks, changes prices and
- * reviews the transaction history.
+ * A Manager adds products, restocks, changes prices, reviews the 
+ * transaction history and can void transactions.
  *
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-11 
@@ -26,9 +26,9 @@ public class Manager extends User {
 		return true;
 	}
 
-	// only the Clerk can void transactions
+	// the Manager has full access, so the Manager can void transactions too
 	@Override
 	public boolean canVoidTransactions() {
-		return false;
+		return true;
 	}
 }

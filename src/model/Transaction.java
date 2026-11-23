@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 /***********************************************************
  * Parent class of every transaction (a sale or a cash entry).
  * It keeps what they share: id, date, clerk and whether it was voided.
+ * 
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-02 
  ***********************************************************/

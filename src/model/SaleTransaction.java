@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /***********************************************************
  * One customer purchase. It is a Transaction that holds a list of SaleLines.
+ * 
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-02
   ***********************************************************/

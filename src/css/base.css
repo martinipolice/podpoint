@@ -48,3 +48,13 @@
 .tile.tile-alert .tile-value {
 	-fx-text-fill: #8A5300;
 }
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}

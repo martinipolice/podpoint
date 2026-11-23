@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -34,6 +35,9 @@ public class InventoryScreen extends VBox {
 	private Label unitsValue;
 	private VBox lowTile;
 	private Label selectedTitle;
+	private TextField editDescField = new TextField();
+	private TextField editCategoryField = new TextField();
+	private TextField editPriceField = new TextField();
 
 	// fills the list box with one line per inventory item and updates the tiles
 	private void showItems() {
@@ -74,9 +78,16 @@ public class InventoryScreen extends VBox {
 			int index = list.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
 				selectedTitle.setText("Select a product from the list");
+				editDescField.clear();
+				editCategoryField.clear();
+				editPriceField.clear();
 			} else {
 				Product p = inventory.getItems().get(index).getProduct();
 				selectedTitle.setText(p.getName() + " (" + p.getSize() + ")");
+				// the edit boxes show the current details of the product
+				editDescField.setText(p.getDescription());
+				editCategoryField.setText(p.getCategory());
+				editPriceField.setText(String.format("%.2f", p.getPrice()));
 			}
 		});
 
@@ -113,33 +124,39 @@ public class InventoryScreen extends VBox {
 			}
 		});
 
-		// ----- change the price of the selected product -----
-		TextField newPriceField = new TextField();
-		newPriceField.setPromptText("New price (PHP)");
+		// ----- edit the details of the selected product -----
+		editDescField.setPromptText("Short description");
+		editCategoryField.setPromptText("e.g. Snacks");
+		editPriceField.setPromptText("0.00");
 
-		Button priceButton = Parts.primaryButton("Update Price");
-		priceButton.setMinWidth(120);
-		priceButton.disableProperty().bind(list.getSelectionModel().selectedItemProperty().isNull());
-		priceButton.setOnAction(event -> {
+		Button saveButton = Parts.primaryButton("Save Changes");
+		saveButton.disableProperty().bind(list.getSelectionModel().selectedItemProperty().isNull());
+		saveButton.setOnAction(event -> {
 			int index = list.getSelectionModel().getSelectedIndex();
 			if (index == -1) {
 				Parts.error(message, "Select a product first.");
 				return;
 			}
+			String desc = editDescField.getText().trim();
+			String category = editCategoryField.getText().trim();
+			if (category.isEmpty()) {
+				Parts.error(message, "Category is required.");
+				return;
+			}
 			try {
-				double newPrice = Double.parseDouble(newPriceField.getText());
+				double newPrice = Double.parseDouble(editPriceField.getText());
 				if (newPrice <= 0 || Double.isNaN(newPrice) || Double.isInfinite(newPrice)) {
 					Parts.error(message, "Price must be above 0.");
 					return;
 				}
 				Product p = inventory.getItems().get(index).getProduct();
+				p.setDescription(desc);
+				p.setCategory(category);
 				p.setPrice(newPrice);
 				FileHandler.saveInventory(inventory);
 				showItems();
 				list.getSelectionModel().select(index);
-				Parts.success(message, "Price of " + p.getName() + " (" + p.getSize() + ") is now PHP "
-						+ String.format("%.2f", newPrice) + ".");
-				newPriceField.clear();
+				Parts.success(message, "Saved the changes to " + p.getName() + " (" + p.getSize() + ").");
 			} catch (NumberFormatException e) {
 				Parts.error(message, "Price must be a number.");
 			}
@@ -222,15 +239,20 @@ public class InventoryScreen extends VBox {
 			restockRow.getChildren().add(amountField);
 			restockRow.getChildren().add(restockButton);
 
-			HBox priceRow = new HBox(10);
-			HBox.setHgrow(newPriceField, Priority.ALWAYS);
-			priceRow.getChildren().add(newPriceField);
-			priceRow.getChildren().add(priceButton);
+			VBox categoryEditBox = Parts.fieldWithCaption("Category", editCategoryField);
+			VBox priceEditBox = Parts.fieldWithCaption("Price (PHP)", editPriceField);
+			HBox.setHgrow(categoryEditBox, Priority.ALWAYS);
+			HBox.setHgrow(priceEditBox, Priority.ALWAYS);
+			HBox categoryPriceRow = new HBox(10);
+			categoryPriceRow.getChildren().add(categoryEditBox);
+			categoryPriceRow.getChildren().add(priceEditBox);
 
 			VBox selectedCard = Parts.card();
 			selectedCard.getChildren().add(selectedTitle);
 			selectedCard.getChildren().add(restockRow);
-			selectedCard.getChildren().add(priceRow);
+			selectedCard.getChildren().add(Parts.fieldWithCaption("Description", editDescField));
+			selectedCard.getChildren().add(categoryPriceRow);
+			selectedCard.getChildren().add(saveButton);
 
 			VBox sizeBox = Parts.fieldWithCaption("Size", sizeField);
 			VBox priceBox = Parts.fieldWithCaption("Price (PHP)", priceField);
@@ -256,12 +278,20 @@ public class InventoryScreen extends VBox {
 			addCard.getChildren().add(categoryQtyRow);
 			addCard.getChildren().add(addButton);
 
-			// the message is under the forms, next to the buttons that were clicked
+			// the two forms scroll when the window is short; the message stays under them
+			VBox forms = new VBox(12);
+			forms.getChildren().add(selectedCard);
+			forms.getChildren().add(addCard);
+
+			ScrollPane scroll = new ScrollPane(forms);
+			scroll.setFitToWidth(true);
+			scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+			VBox.setVgrow(scroll, Priority.ALWAYS);
+
 			VBox right = new VBox(12);
-			right.setPrefWidth(360);
-			right.setMinWidth(360);
-			right.getChildren().add(selectedCard);
-			right.getChildren().add(addCard);
+			right.setPrefWidth(385);
+			right.setMinWidth(385);
+			right.getChildren().add(scroll);
 			right.getChildren().add(message);
 			body.getChildren().add(right);
 		} else {

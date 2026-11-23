@@ -2,11 +2,12 @@ package model;
 
 import java.io.Serializable;
 
-/***
+/***********************************************************
  * One line of a sale: a product, how many were bought,
  * and the price at the time of the sale.
+ * 
  * @author CHARLES GIAN L. SANTOS
- * @created_date 2026-11-02 08:25
+ * @created_date 2026-11-02 
  ***********************************************************/
 
 public class SaleLine implements Serializable {

@@ -29,12 +29,7 @@
 	-fx-text-fill: -cocoa;
 }
 
-/* ----- summary tiles (built in Parts.java) -----
-   Hierarchy: the main tile of a screen is the first one, with a bigger
-   number on a cream background. The other tiles are plain white.
-   A tile with a warning (for example Low stock) gets an amber stripe.
-   These use two class names (.tile.tile-primary) so they win over the
-   .bg-card and .border utilities. */
+/* ----- summary tiles (built in Parts.java) ----- */
 .tile.tile-primary {
 	-fx-background-color: -cream;
 	-fx-border-color: #E3CFB4;

@@ -10,6 +10,7 @@ import util.FileHandler;
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-10-25
  ***********************************************************/
+
 public class ProductTest {
 
 	public static void main(String[] args) {

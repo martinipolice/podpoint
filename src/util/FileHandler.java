@@ -28,7 +28,6 @@ public class FileHandler {
 	private static final Path INVENTORY_PATH = Paths.get("data/inventory.dat");
 	private static final Path TRANSACTIONS_PATH = Paths.get("data/transactions.dat");
 
-	// ---------- the two helpers ----------
 
 	// writes any serializable object into a file.
 	// try ( ... ) closes the file by itself, even when an error happens.

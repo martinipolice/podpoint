@@ -14,7 +14,7 @@ public class Inventory implements Serializable {
 	// fixed version number of this class, so saved data stays readable after small code changes
 	private static final long serialVersionUID = 1L;
 
-	// the most that one item can have in stock (stops a typing mistake from adding millions)
+	// the most that one item can have in stock 
 	public static final int MAX_STOCK = 100000;
 
 	private ArrayList<InventoryItem> items;

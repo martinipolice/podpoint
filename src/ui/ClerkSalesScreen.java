@@ -24,6 +24,7 @@ import util.PodSystem;
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-12 
  ***********************************************************/
+
 public class ClerkSalesScreen extends VBox {
 
 	private ArrayList<Transaction> history;

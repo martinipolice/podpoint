@@ -14,7 +14,7 @@ public class InventoryItem implements Serializable {
 	// fixed version number of this class, so saved data stays readable after small code changes
 	private static final long serialVersionUID = 1L;
 
-	// this item HAS a product (composition)
+	// this item HAS a product
 	private Product product;
 	private int quantity;
 	// when quantity falls to this number or lower, the item is "low stock"

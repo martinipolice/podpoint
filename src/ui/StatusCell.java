@@ -10,6 +10,7 @@ import javafx.scene.control.ListCell;
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-14 
  ***********************************************************/
+
 public class StatusCell extends ListCell<String> {
 
 	@Override

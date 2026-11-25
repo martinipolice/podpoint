@@ -21,7 +21,7 @@ public class Product implements Serializable {
 	private double price;
 	private String category;
 
-	// constructor: runs when we write new Product(...)
+	// constructor
 	public Product(String name, String description, String size, double price, String category) {
 		this.name = name;
 		this.description = description;

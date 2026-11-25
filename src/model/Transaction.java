@@ -15,7 +15,7 @@ public abstract class Transaction implements Serializable {
 	// fixed version number of this class, so saved data stays readable after small code changes
 	private static final long serialVersionUID = 1L;
 
-	// shared by all transactions, gives each one a new id (like the counter in your handout)
+	// shared by all transactions, gives each one a new id 
 	private static int nextId = 1;
 
 	private int id;
@@ -53,7 +53,7 @@ public abstract class Transaction implements Serializable {
 	}
 
 	// marks this transaction as cancelled (it stays in the history).
-	// Returns false if it was already voided, so the caller does not undo it twice.
+	// returns false if it was already voided, so the caller does not undo it twice.
 	public boolean voidTransaction() {
 		if (voided) {
 			return false;

@@ -1,7 +1,4 @@
-/* utilities.css - small single-purpose classes in the style of Tailwind.
-   Put one or more of them on a control, for example:
-   label.getStyleClass().addAll("text-lg", "font-bold", "text-cocoa");
-   This file is loaded last, so the utilities win over the other files. */
+/* utilities.css - small single-purpose classes in the style of Tailwind.*/
 
 /* text size */
 .text-sm   { -fx-font-size: 13px; }

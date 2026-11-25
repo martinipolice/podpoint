@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * 
  * @author CHARLES GIAN L. SANTOS
  * @created_date 2026-11-02
-  ***********************************************************/
+***********************************************************/
 
 public class SaleTransaction extends Transaction {
 	// fixed version number of this class, so saved data stays readable after small code changes
@@ -45,7 +45,7 @@ public class SaleTransaction extends Transaction {
 	}
 	
 	// voiding a sale puts the sold items back into stock.
-	// The stock is added directly (not through restock), so it is always put back.
+	// the stock is added directly (not through restock), so it is always put back.
 	@Override
 	public void undoEffect(Inventory inventory) {
 		for (SaleLine line : lines) {

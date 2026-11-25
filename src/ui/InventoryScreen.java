@@ -24,8 +24,9 @@ import util.FileHandler;
  * It is a VBox, so it can be placed in any window (window switching).
  *
  * @author CHARLES GIAN L. SANTOS
- * @created_date 2026-11-06 08:55
+ * @created_date 2026-11-06 
  ***********************************************************/
+
 public class InventoryScreen extends VBox {
 
 	private Inventory inventory;

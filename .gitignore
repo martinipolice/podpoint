@@ -1,2 +1,4 @@
 bin/
 data/*.bad
+data/inventory.dat
+data/transactions.dat
